@@ -6,6 +6,7 @@ use App\Helpers\ResponseFormatter;
 use App\Http\Controllers\Controller;
 use App\Models\MTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -27,17 +28,17 @@ class TransactionController extends Controller
                 }
             }
 
-            $transaction = MTransaction::with(['food', 'user'])->query();
+            $transaction = MTransaction::with(['food', 'user'])->where('user_id', Auth::user()->id);
 
             if ($food_id) {
-                $transaction->where('name', 'like', $food_id);
+                $transaction->where('name', $food_id);
             }
 
             if ($status) {
-                $transaction->where('types', $status);
+                $transaction->where('status', $status);
             }
 
-            return ResponseFormatter::success($transaction->paginate($limit, 'Data list food berhasil diambil'));
+            return ResponseFormatter::success($transaction->paginate($limit, 'Data list transaksi berhasil diambil'));
         } catch (\Throwable $error) {
             return ResponseFormatter::error([
                 'message' => 'Something went wrong',
