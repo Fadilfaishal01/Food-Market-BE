@@ -64,14 +64,14 @@ class UserController extends Controller
                 'password' => $this->passwordRules(),
             ]);
 
-            User::created([
+            User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'address' => $request->address,
                 'houseNumber' => $request->houseNumber,
                 'phoneNumber' => $request->phoneNumber,
                 'city' => $request->city,
-                'passowrd' => Hash::make($request->password),
+                'password' => Hash::make($request->password),
             ]);
 
             $user = User::where('email', $request->email)->first();

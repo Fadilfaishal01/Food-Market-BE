@@ -16,6 +16,7 @@
         <!-- Scripts -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
         <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="font-sans antialiased">
         <x-jet-banner />
@@ -43,3 +44,12 @@
         @livewireScripts
     </body>
 </html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#alert").fadeTo(1000, 1000).slideUp(1000, function() {
+            $("#alert").slideUp(1000);
+        });
+    });
+</script>
