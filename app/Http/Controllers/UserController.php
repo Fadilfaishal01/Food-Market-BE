@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -42,8 +42,8 @@ class UserController extends Controller
     {
         try {
             $data = $request->all();
-            if ($request->file('profile_photo_path')) {
-                $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+            if ($request->file('picturePath')) {
+                $data['profile_photo_path'] = $request->file('picturePath')->store('assets/user', 'public');
             }
 
             User::create($data);
@@ -89,17 +89,17 @@ class UserController extends Controller
     {
         try {
             $data = $request->all();
-            if ($request->file('profile_photo_path')) {
-                $data['profile_photo_path'] = $request->file('profile_photo_path')->store('assets/user', 'public');
+            if ($request->file('picturePath')) {
+                $data['profile_photo_path'] = $request->file('picturePath')->store('assets/user', 'public');
+            } else {
+                $data['profile_photo_path'] = $user->profile_photo_path;
             }
 
             if (!empty($request->password)) {
-                $data['password'] = $request->password;
+                $data['password'] = Hash::make($request->password);
             } else {
-                $data['password'] = $user->password;
+                $data['password'] = Hash::make($user->password);
             }
-
-            unset($data['email']);
 
             $user->update($data);
 
@@ -119,6 +119,12 @@ class UserController extends Controller
     {
         try {
             $user->delete();
+
+            // Delete imagenya juga
+            if (!empty($user->profile_photo_path)) {
+                $imagePath = storage_path("app/public/" . $user->profile_photo_path);
+                unlink($imagePath);
+            }
 
             return redirect()->route('users.index')->with('success', 'Berhasil menghapus data ' . $user->name);
         } catch (\Throwable $error) {

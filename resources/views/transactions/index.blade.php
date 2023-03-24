@@ -1,7 +1,7 @@
 <x-app-layout>
    <x-slot name="header">
        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-           {{ __('User') }}
+           {{ __('Transaction') }}
        </h2>
    </x-slot>
 
@@ -49,37 +49,32 @@
          </div>
          @endif
 
-         <div class="mb-4">
-            <a href="{{ route('users.create') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            + Create User</a>
-         </div>
-
          <div class="bg-white">
             <table class="table-auto w-full">
                <thead>
                   <tr>
                      <th class="border px-4 py-4">ID</th>
-                     <th class="border px-4 py-4">Photo</th>
-                     <th class="border px-4 py-4">Name</th>
-                     <th class="border px-4 py-4">Email</th>
-                     <th class="border px-4 py-4">Roles</th>
+                     <th class="border px-4 py-4">Food</th>
+                     <th class="border px-4 py-4">User</th>
+                     <th class="border px-4 py-4">Quantity</th>
+                     <th class="border px-4 py-4">Total</th>
+                     <th class="border px-4 py-4">Status</th>
                      <th class="border px-4 py-4">Action</th>
                   </tr>
                </thead>
-               <tbody>  
-                  @forelse ($user as $item)
+               <tbody>
+                  @forelse ($transaction as $item)
                      <tr>
                         <td class="border px-4 py-4 text-center">{{ $item->id }}</td>
-                        <td class="border px-4 py-4 flex justify-center">
-                           <img width="50" height="50" src="{{ url('storage/'.$item->profile_photo_path) }}" alt="{{ $item->name }}">
-                        </td>
-                        <td class="border px-4 py-4">{{ $item->name }}</td>
-                        <td class="border px-4 py-4">{{ $item->email }}</td>
-                        <td class="border px-4 py-4">{{ $item->roles }}</td>
+                        <td class="border px-4 py-4">{{ $item->food->name }}</td>
+                        <td class="border px-4 py-4">{{ $item->user->name }}</td>
+                        <td class="border px-4 py-4 text-center">{{ $item->quantity }}</td>
+                        <td class="border px-4 py-4">{{ number_format($item->total, 0) }}</td>
+                        <td class="border px-4 py-4">{{ $item->status }}</td>
                         <td class="border px-4 py-4 text-center">
-                           <a href="{{ route('users.edit', $item->id) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                              Edit</a>
-                           <form action="{{ route('users.destroy', $item->id) }}" method="POST" class="inline-block">
+                           <a href="{{ route('transaction.show', $item->id) }}" class="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                              View</a>
+                           <form action="{{ route('transaction.destroy', $item->id) }}" method="POST" class="inline-block">
                               {!! method_field('delete') . csrf_field() !!}
                               <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
                            </form>
@@ -87,7 +82,7 @@
                      </tr>
                   @empty
                      <tr>
-                        <td colspan="5" class="border text-center p-5">
+                        <td colspan="7" class="border text-center p-5">
                            Data Tidak Ditemukan
                         </td>
                      </tr>
@@ -97,7 +92,7 @@
          </div>
 
          <div class="text-center mt-5">
-            {{ $user->links() }}
+            {{ $transaction->links() }}
          </div>
       </div>
    </div>

@@ -21,6 +21,7 @@ class MFood extends Model
         'price',
         'rate',
         'types',
+        'picturePath',
     ];
 
     public function getCreatedAtAttribute($value)
