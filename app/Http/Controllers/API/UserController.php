@@ -27,6 +27,7 @@ class UserController extends Controller
 
             // Cek credential login
             $credentials = request(['email', 'password']);
+
             if (!Auth::attempt($credentials)) {
                 return ResponseFormatter::error([
                     'message' => 'Unauthorized', // Data
@@ -86,7 +87,7 @@ class UserController extends Controller
             return ResponseFormatter::error([
                 'message' => 'Something went wrong',
                 'error' => $error->getMessage(),
-            ], 'Authentication Failed', 500);
+            ], 'Gagal Melakukan Register', 400);
         }
     }
 
